@@ -65,7 +65,8 @@
         {'letra': 'F', 'valor': 11},
         {'letra': 'G', 'valor': 22}
       ] // essas são frequências relativas dessas letras em inglês.
-
+      var domainX = dados.map(dado => dado.letra);
+      var domainY = dados.map(dado => dado.valor);
       // definicoes de altura e largura do svg e da vis dentro
       var alturaSVG = 400, larguraSVG = 900;
       var	margin = {top: 10, right: 20, bottom:30, left: 45}, // para descolar a vis das bordas do grafico
@@ -82,16 +83,19 @@
         .append('g') // para entender o <g> vá em x03-detalhes-svg.html
           .attr('transform', 'translate(' +  margin.left + ',' + margin.top + ')');
 
-      // === EDITE DAQUI ===
       /*
        * As escalas
        */
-      var x = d3.scaleBand(); // Configure essa escala com domain, range e padding
+      var x = d3.scaleBand()
+                .range([0, larguraVis])
+                .padding(.1)
+                .domain(domainX); // Configure essa escala com domain, range e padding
 
-      var y = d3.scaleLinear() // Configure essa escala com domain e range
+      var y = d3.scaleLinear()
+                .range([0, alturaVis])
+                .domain([d3.max(dados, d => d.valor), 0])
+                .nice(); // Configure essa escala com domain e range
                                // Lembre que uma escala pode converter de 1..10 -> 100..1
-
-      // === ATÉ DAQUI ===
 
       /*
        * As marcas
